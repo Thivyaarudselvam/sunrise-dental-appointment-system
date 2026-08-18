@@ -1,14 +1,7 @@
-package com.example.model;
+package com.example.demo.model;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "bills")
@@ -26,7 +19,6 @@ public class Bill {
     private BigDecimal treatmentCost;
     private BigDecimal totalAmount;
 
-    // Default constructor
     public Bill() {
     }
 
@@ -37,7 +29,6 @@ public class Bill {
         this.totalAmount = consultationFee.add(treatmentCost);
     }
 
-    // Getters and Setters
     public Long getBillId() {
         return billId;
     }

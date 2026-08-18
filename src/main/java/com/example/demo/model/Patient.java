@@ -1,10 +1,6 @@
-package com.example.model;
+package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "patients")
@@ -18,7 +14,6 @@ public class Patient {
     private String address;
     private String contactNumber;
 
-    // Default constructor (required by JPA)
     public Patient() {
     }
 
@@ -28,7 +23,6 @@ public class Patient {
         this.contactNumber = contactNumber;
     }
 
-    // Getters and Setters
     public Long getPatientId() {
         return patientId;
     }
