@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard - Sunrise Dental Clinic</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>Sunrise Dental Clinic</h1>
+  <div>
+    <a href="help.html">Help</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>Welcome, Staff</h2>
+    <p>Select an option below to manage appointments and patients.</p>
+  </div>
+
+  <div class="menu-grid">
+    <a class="menu-item" href="appointments.html"><span class="icon">📅</span>Register / Search Appointment</a>
+    <a class="menu-item" href="patients.html"><span class="icon">🧑</span>Manage Patients</a>
+    <a class="menu-item" href="dentists.html"><span class="icon">🦷</span>Manage Dentists</a>
+    <a class="menu-item" href="treatments.html"><span class="icon">💊</span>Manage Treatments</a>
+    <a class="menu-item" href="billing.html"><span class="icon">🧾</span>Generate Bill</a>
+    <a class="menu-item" href="help.html"><span class="icon">❓</span>Help</a>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>requireLogin();</script>
+</body>
+</html>

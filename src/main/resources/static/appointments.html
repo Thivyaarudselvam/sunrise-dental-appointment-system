@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appointments - Sunrise Dental Clinic</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>Sunrise Dental Clinic</h1>
+  <div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>Register New Appointment</h2>
+
+    <label>Patient</label>
+    <select id="patientSelect"></select>
+
+    <label>Dentist</label>
+    <select id="dentistSelect"></select>
+
+    <label>Treatment Type</label>
+    <select id="treatmentSelect"></select>
+
+    <label>Appointment Date</label>
+    <input type="date" id="apptDate">
+
+    <label>Appointment Time</label>
+    <input type="time" id="apptTime">
+
+    <button onclick="registerAppointment()">Register Appointment</button>
+    <div class="msg" id="regMsg"></div>
+  </div>
+
+  <div class="card">
+    <h2>Search Appointment</h2>
+    <label>Appointment Number</label>
+    <input type="number" id="searchNumber" placeholder="e.g. 1">
+    <button onclick="searchAppointment()">Search</button>
+    <div class="msg" id="searchMsg"></div>
+    <div class="bill-view" id="searchResult" style="display:none"></div>
+  </div>
+
+  <div class="card">
+    <h2>All Appointments</h2>
+    <table>
+      <thead><tr><th>No.</th><th>Patient</th><th>Dentist</th><th>Treatment</th><th>Date</th><th>Time</th></tr></thead>
+      <tbody id="apptTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+requireLogin();
+
+async function loadDropdowns() {
+  const [patients, dentists, treatments] = await Promise.all([
+    fetch(API_BASE + '/patients').then(r => r.json()),
+    fetch(API_BASE + '/dentists').then(r => r.json()),
+    fetch(API_BASE + '/treatments').then(r => r.json())
+  ]);
+
+  const pSel = document.getElementById('patientSelect');
+  pSel.innerHTML = patients.map(p => `<option value="${p.patientId}">${p.name}</option>`).join('');
+
+  const dSel = document.getElementById('dentistSelect');
+  dSel.innerHTML = dentists.map(d => `<option value="${d.dentistId}">${d.name} (${d.specialization})</option>`).join('');
+
+  const tSel = document.getElementById('treatmentSelect');
+  tSel.innerHTML = treatments.map(t => `<option value="${t.treatmentId}">${t.treatmentName} - LKR ${t.cost}</option>`).join('');
+}
+
+async function loadAppointments() {
+  const res = await fetch(API_BASE + '/appointments');
+  const data = await res.json();
+  const tbody = document.getElementById('apptTable');
+  tbody.innerHTML = '';
+  data.forEach(a => {
+    tbody.innerHTML += `<tr>
+      <td>${a.appointmentNumber}</td>
+      <td>${a.patient ? a.patient.name : ''}</td>
+      <td>${a.dentist ? a.dentist.name : ''}</td>
+      <td>${a.treatment ? a.treatment.treatmentName : ''}</td>
+      <td>${a.appointmentDate}</td>
+      <td>${a.appointmentTime}</td>
+    </tr>`;
+  });
+}
+
+async function registerAppointment() {
+  const patientId = document.getElementById('patientSelect').value;
+  const dentistId = document.getElementById('dentistSelect').value;
+  const treatmentId = document.getElementById('treatmentSelect').value;
+  const date = document.getElementById('apptDate').value;
+  const time = document.getElementById('apptTime').value;
+  const msg = document.getElementById('regMsg');
+
+  if (!patientId || !dentistId || !treatmentId || !date || !time) {
+    showMsg(msg, 'Please fill all fields. You need at least one patient, dentist and treatment registered first.', true);
+    return;
+  }
+
+  const body = {
+    patient: { patientId },
+    dentist: { dentistId },
+    treatment: { treatmentId },
+    appointmentDate: date,
+    appointmentTime: time
+  };
+
+  const res = await fetch(API_BASE + '/appointments', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    showMsg(msg, `Appointment registered. Appointment No: ${data.appointmentNumber}`, false);
+    loadAppointments();
+  } else {
+    showMsg(msg, 'Failed to register appointment.', true);
+  }
+}
+
+async function searchAppointment() {
+  const num = document.getElementById('searchNumber').value;
+  const msg = document.getElementById('searchMsg');
+  const resultBox = document.getElementById('searchResult');
+
+  if (!num) {
+    showMsg(msg, 'Please enter an appointment number.', true);
+    resultBox.style.display = 'none';
+    return;
+  }
+
+  const res = await fetch(API_BASE + '/appointments/' + num);
+
+  if (res.ok) {
+    const a = await res.json();
+    msg.style.display = 'none';
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = `
+      <p><strong>Appointment No:</strong> ${a.appointmentNumber}</p>
+      <p><strong>Patient:</strong> ${a.patient.name} (${a.patient.contactNumber})</p>
+      <p><strong>Dentist:</strong> ${a.dentist.name}</p>
+      <p><strong>Treatment:</strong> ${a.treatment.treatmentName}</p>
+      <p><strong>Date:</strong> ${a.appointmentDate} at ${a.appointmentTime}</p>
+    `;
+  } else {
+    resultBox.style.display = 'none';
+    showMsg(msg, 'Appointment not found.', true);
+  }
+}
+
+loadDropdowns();
+loadAppointments();
+</script>
+</body>
+</html>

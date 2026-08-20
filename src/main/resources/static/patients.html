@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Patients - Sunrise Dental Clinic</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>Sunrise Dental Clinic</h1>
+  <div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>Register New Patient</h2>
+    <label>Full Name</label>
+    <input type="text" id="name" placeholder="e.g. Nimal Perera">
+    <label>Address</label>
+    <input type="text" id="address" placeholder="e.g. 45 Galle Road, Colombo">
+    <label>Contact Number</label>
+    <input type="text" id="contact" placeholder="e.g. 0771234567">
+    <button onclick="addPatient()">Register Patient</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="card">
+    <h2>All Patients</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Address</th><th>Contact</th></tr></thead>
+      <tbody id="patientTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+requireLogin();
+
+async function loadPatients() {
+  const res = await fetch(API_BASE + '/patients');
+  const data = await res.json();
+  const tbody = document.getElementById('patientTable');
+  tbody.innerHTML = '';
+  data.forEach(p => {
+    tbody.innerHTML += `<tr><td>${p.patientId}</td><td>${p.name}</td><td>${p.address}</td><td>${p.contactNumber}</td></tr>`;
+  });
+}
+
+async function addPatient() {
+  const name = document.getElementById('name').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const contact = document.getElementById('contact').value.trim();
+  const msg = document.getElementById('msg');
+
+  if (!name || !address || !contact) {
+    showMsg(msg, 'Please fill all fields.', true);
+    return;
+  }
+
+  const res = await fetch(API_BASE + '/patients', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, address, contactNumber: contact })
+  });
+
+  if (res.ok) {
+    showMsg(msg, 'Patient registered successfully.', false);
+    document.getElementById('name').value = '';
+    document.getElementById('address').value = '';
+    document.getElementById('contact').value = '';
+    loadPatients();
+  } else {
+    showMsg(msg, 'Failed to register patient.', true);
+  }
+}
+
+loadPatients();
+</script>
+</body>
+</html>

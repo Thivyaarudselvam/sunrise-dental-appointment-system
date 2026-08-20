@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dentists - Sunrise Dental Clinic</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>Sunrise Dental Clinic</h1>
+  <div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>Add New Dentist</h2>
+    <label>Full Name</label>
+    <input type="text" id="name" placeholder="e.g. Dr. Kamal Silva">
+    <label>Specialization</label>
+    <input type="text" id="specialization" placeholder="e.g. Orthodontics">
+    <button onclick="addDentist()">Add Dentist</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="card">
+    <h2>All Dentists</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Specialization</th></tr></thead>
+      <tbody id="dentistTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+requireLogin();
+
+async function loadDentists() {
+  const res = await fetch(API_BASE + '/dentists');
+  const data = await res.json();
+  const tbody = document.getElementById('dentistTable');
+  tbody.innerHTML = '';
+  data.forEach(d => {
+    tbody.innerHTML += `<tr><td>${d.dentistId}</td><td>${d.name}</td><td>${d.specialization}</td></tr>`;
+  });
+}
+
+async function addDentist() {
+  const name = document.getElementById('name').value.trim();
+  const specialization = document.getElementById('specialization').value.trim();
+  const msg = document.getElementById('msg');
+
+  if (!name || !specialization) {
+    showMsg(msg, 'Please fill all fields.', true);
+    return;
+  }
+
+  const res = await fetch(API_BASE + '/dentists', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, specialization })
+  });
+
+  if (res.ok) {
+    showMsg(msg, 'Dentist added successfully.', false);
+    document.getElementById('name').value = '';
+    document.getElementById('specialization').value = '';
+    loadDentists();
+  } else {
+    showMsg(msg, 'Failed to add dentist.', true);
+  }
+}
+
+loadDentists();
+</script>
+</body>
+</html>

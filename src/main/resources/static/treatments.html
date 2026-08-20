@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Treatments - Sunrise Dental Clinic</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <h1>Sunrise Dental Clinic</h1>
+  <div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>Add New Treatment</h2>
+    <label>Treatment Name</label>
+    <input type="text" id="treatmentName" placeholder="e.g. Tooth Extraction">
+    <label>Cost (LKR)</label>
+    <input type="number" id="cost" placeholder="e.g. 3500">
+    <button onclick="addTreatment()">Add Treatment</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="card">
+    <h2>All Treatments</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Treatment</th><th>Cost (LKR)</th></tr></thead>
+      <tbody id="treatmentTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+requireLogin();
+
+async function loadTreatments() {
+  const res = await fetch(API_BASE + '/treatments');
+  const data = await res.json();
+  const tbody = document.getElementById('treatmentTable');
+  tbody.innerHTML = '';
+  data.forEach(t => {
+    tbody.innerHTML += `<tr><td>${t.treatmentId}</td><td>${t.treatmentName}</td><td>${t.cost}</td></tr>`;
+  });
+}
+
+async function addTreatment() {
+  const treatmentName = document.getElementById('treatmentName').value.trim();
+  const cost = document.getElementById('cost').value;
+  const msg = document.getElementById('msg');
+
+  if (!treatmentName || !cost) {
+    showMsg(msg, 'Please fill all fields.', true);
+    return;
+  }
+
+  const res = await fetch(API_BASE + '/treatments', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ treatmentName, cost: parseFloat(cost) })
+  });
+
+  if (res.ok) {
+    showMsg(msg, 'Treatment added successfully.', false);
+    document.getElementById('treatmentName').value = '';
+    document.getElementById('cost').value = '';
+    loadTreatments();
+  } else {
+    showMsg(msg, 'Failed to add treatment.', true);
+  }
+}
+
+loadTreatments();
+</script>
+</body>
+</html>
