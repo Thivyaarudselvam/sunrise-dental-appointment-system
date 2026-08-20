@@ -39,51 +39,16 @@ public class Appointment {
         this.appointmentTime = appointmentTime;
     }
 
-    public Long getAppointmentNumber() {
-        return appointmentNumber;
-    }
-
-    public void setAppointmentNumber(Long appointmentNumber) {
-        this.appointmentNumber = appointmentNumber;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Dentist getDentist() {
-        return dentist;
-    }
-
-    public void setDentist(Dentist dentist) {
-        this.dentist = dentist;
-    }
-
-    public Treatment getTreatment() {
-        return treatment;
-    }
-
-    public void setTreatment(Treatment treatment) {
-        this.treatment = treatment;
-    }
-
-    public LocalDate getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(LocalDate appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-
-    public LocalTime getAppointmentTime() {
-        return appointmentTime;
-    }
-
-    public void setAppointmentTime(LocalTime appointmentTime) {
-        this.appointmentTime = appointmentTime;
-    }
+    public Long getAppointmentNumber() { return appointmentNumber; }
+    public void setAppointmentNumber(Long appointmentNumber) { this.appointmentNumber = appointmentNumber; }
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
+    public Dentist getDentist() { return dentist; }
+    public void setDentist(Dentist dentist) { this.dentist = dentist; }
+    public Treatment getTreatment() { return treatment; }
+    public void setTreatment(Treatment treatment) { this.treatment = treatment; }
+    public LocalDate getAppointmentDate() { return appointmentDate; }
+    public void setAppointmentDate(LocalDate appointmentDate) { this.appointmentDate = appointmentDate; }
+    public LocalTime getAppointmentTime() { return appointmentTime; }
+    public void setAppointmentTime(LocalTime appointmentTime) { this.appointmentTime = appointmentTime; }
 }

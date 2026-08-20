@@ -22,27 +22,10 @@ public class Treatment {
         this.cost = cost;
     }
 
-    public Long getTreatmentId() {
-        return treatmentId;
-    }
-
-    public void setTreatmentId(Long treatmentId) {
-        this.treatmentId = treatmentId;
-    }
-
-    public String getTreatmentName() {
-        return treatmentName;
-    }
-
-    public void setTreatmentName(String treatmentName) {
-        this.treatmentName = treatmentName;
-    }
-
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
+    public Long getTreatmentId() { return treatmentId; }
+    public void setTreatmentId(Long treatmentId) { this.treatmentId = treatmentId; }
+    public String getTreatmentName() { return treatmentName; }
+    public void setTreatmentName(String treatmentName) { this.treatmentName = treatmentName; }
+    public BigDecimal getCost() { return cost; }
+    public void setCost(BigDecimal cost) { this.cost = cost; }
 }

@@ -29,43 +29,14 @@ public class Bill {
         this.totalAmount = consultationFee.add(treatmentCost);
     }
 
-    public Long getBillId() {
-        return billId;
-    }
-
-    public void setBillId(Long billId) {
-        this.billId = billId;
-    }
-
-    public Appointment getAppointment() {
-        return appointment;
-    }
-
-    public void setAppointment(Appointment appointment) {
-        this.appointment = appointment;
-    }
-
-    public BigDecimal getConsultationFee() {
-        return consultationFee;
-    }
-
-    public void setConsultationFee(BigDecimal consultationFee) {
-        this.consultationFee = consultationFee;
-    }
-
-    public BigDecimal getTreatmentCost() {
-        return treatmentCost;
-    }
-
-    public void setTreatmentCost(BigDecimal treatmentCost) {
-        this.treatmentCost = treatmentCost;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+    public Long getBillId() { return billId; }
+    public void setBillId(Long billId) { this.billId = billId; }
+    public Appointment getAppointment() { return appointment; }
+    public void setAppointment(Appointment appointment) { this.appointment = appointment; }
+    public BigDecimal getConsultationFee() { return consultationFee; }
+    public void setConsultationFee(BigDecimal consultationFee) { this.consultationFee = consultationFee; }
+    public BigDecimal getTreatmentCost() { return treatmentCost; }
+    public void setTreatmentCost(BigDecimal treatmentCost) { this.treatmentCost = treatmentCost; }
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
 }
