@@ -15,6 +15,21 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     public Appointment registerAppointment(Appointment appointment) {
+        if (appointment.getPatient() == null) {
+            throw new IllegalArgumentException("A patient must be selected for the appointment.");
+        }
+        if (appointment.getDentist() == null) {
+            throw new IllegalArgumentException("A dentist must be selected for the appointment.");
+        }
+        if (appointment.getTreatment() == null) {
+            throw new IllegalArgumentException("A treatment must be selected for the appointment.");
+        }
+        if (appointment.getAppointmentDate() == null) {
+            throw new IllegalArgumentException("Appointment date is required.");
+        }
+        if (appointment.getAppointmentTime() == null) {
+            throw new IllegalArgumentException("Appointment time is required.");
+        }
         return appointmentRepository.save(appointment);
     }
 

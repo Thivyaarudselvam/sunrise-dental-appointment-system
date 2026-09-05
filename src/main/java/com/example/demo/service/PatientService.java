@@ -15,6 +15,15 @@ public class PatientService {
     private PatientRepository patientRepository;
 
     public Patient registerPatient(Patient patient) {
+        if (patient.getName() == null || patient.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Patient name is required.");
+        }
+        if (patient.getAddress() == null || patient.getAddress().trim().isEmpty()) {
+            throw new IllegalArgumentException("Patient address is required.");
+        }
+        if (patient.getContactNumber() == null || patient.getContactNumber().trim().isEmpty()) {
+            throw new IllegalArgumentException("Patient contact number is required.");
+        }
         return patientRepository.save(patient);
     }
 

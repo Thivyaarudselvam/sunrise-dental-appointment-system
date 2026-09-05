@@ -89,4 +89,15 @@ class AppointmentServiceTest {
         assertEquals(1, result.size());
         verify(appointmentRepository, times(1)).findAll();
     }
+
+    @Test
+    @DisplayName("Registering an appointment with a missing required field should be rejected")
+    void testRegisterAppointment_MissingDate_ThrowsException() {
+        sampleAppointment.setAppointmentDate(null);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> appointmentService.registerAppointment(sampleAppointment));
+
+        verify(appointmentRepository, never()).save(any(Appointment.class));
+    }
 }

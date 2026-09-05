@@ -84,4 +84,15 @@ class PatientServiceTest {
 
         assertFalse(result.isPresent());
     }
+
+    @Test
+    @DisplayName("Registering a patient with a missing required field should be rejected")
+    void testRegisterPatient_MissingName_ThrowsException() {
+        Patient invalidPatient = new Patient("", "No 12", "0771234567");
+
+        assertThrows(IllegalArgumentException.class,
+                () -> patientService.registerPatient(invalidPatient));
+
+        verify(patientRepository, never()).save(any(Patient.class));
+    }
 }
